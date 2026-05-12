@@ -1,0 +1,46 @@
+# MCP Mesh Topology — PMOVES fleet MCP server registry
+# Distilled from pmoves/config/mcp/*.yaml
+# Override path via $MCP_TOPOLOGY_PATH env var.
+
+servers:
+  - name: agent-zero
+    url: http://localhost:8080
+    transport: http
+    health_path: /
+    description: "Agent Zero orchestration engine — MCP API at /mcp"
+    tags: [orchestration, a0]
+
+  - name: archon
+    url: http://localhost:8100
+    transport: http
+    health_path: /healthz
+    description: "Archon agent coordination layer"
+    tags: [orchestration, archon]
+
+  - name: supabase
+    url: "${SUPABASE_URL}"
+    transport: http
+    health_path: /rest/v1/
+    description: "Supabase REST/MCP endpoint (set $SUPABASE_URL)"
+    tags: [database, storage]
+
+  - name: neo4j
+    url: bolt://localhost:7687
+    transport: bolt
+    health_path: null
+    description: "Neo4j graph database (bolt transport, no HTTP health)"
+    tags: [graph, database]
+
+  - name: docker
+    url: http://localhost:2375
+    transport: http
+    health_path: /version
+    description: "Docker Engine MCP (local socket proxy)"
+    tags: [infra, docker]
+
+  - name: hostinger
+    url: https://api.hostinger.com
+    transport: http
+    health_path: /v1/profile
+    description: "Hostinger API MCP (set $HOSTINGER_API_KEY)"
+    tags: [vps, hosting]
